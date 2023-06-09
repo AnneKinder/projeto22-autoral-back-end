@@ -1,0 +1,75 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Dreams {
+  id           Int       @id(map: "Dreams_pk") @default(autoincrement())
+  title        String    @db.VarChar
+  userId       Int
+  dateToBeDone String
+  isDone       Boolean   @default(false)
+  dateWhenDone String?
+  totalPoints  Int
+  createdAt    DateTime  @default(dbgenerated("'2023-06-06 22:24:40.774078-03'::timestamp with time zone")) @db.Timestamptz(6)
+  updatedAt    DateTime? @db.Timestamptz(6)
+  User         User      @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Dreams_fk0")
+  Goals        Goals[]
+}
+
+model GoalCategories {
+  id        Int       @id(map: "GoalCategories_pk") @default(autoincrement())
+  name      String    @db.VarChar
+  type      goalType
+  createdAt DateTime  @default(dbgenerated("'2023-06-06 22:24:40.786862-03'::timestamp with time zone")) @db.Timestamptz(6)
+  updatedAt DateTime? @db.Timestamptz(6)
+  Goals     Goals[]
+}
+
+model Goals {
+  id             Int            @id(map: "Goals_pk") @default(autoincrement())
+  title          String         @db.VarChar
+  dreamId        Int
+  categoryId     Int
+  isDone         Boolean        @default(false)
+  dateWheDone    DateTime?      @db.Date
+  points         Int
+  createdAt      DateTime       @default(dbgenerated("'2023-06-06 22:24:40.7805-03'::timestamp with time zone")) @db.Timestamptz(6)
+  updatedAt      DateTime?      @db.Timestamptz(6)
+  Dreams         Dreams         @relation(fields: [dreamId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Goals_fk0")
+  GoalCategories GoalCategories @relation(fields: [categoryId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Goals_fk1")
+}
+
+model Session {
+  id        Int       @id(map: "Session_pk") @default(autoincrement())
+  userId    Int       @unique
+  token     String    @unique
+  createdAt DateTime  @default(dbgenerated("'2023-06-06 22:24:40.793872-03'::timestamp with time zone")) @db.Timestamptz(6)
+  updatedAt DateTime? @default(dbgenerated("'2023-06-08 11:08:25.518604-03'::timestamp with time zone")) @db.Timestamptz(6)
+  User      User      @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Session_fk0")
+}
+
+model User {
+  id        Int       @id(map: "User_pk") @default(autoincrement())
+  name      String    @db.VarChar
+  lastName  String    @db.VarChar
+  email     String    @unique @db.VarChar
+  password  String    @db.VarChar
+  score     Int?
+  createdAt DateTime  @default(dbgenerated("'2023-06-06 22:24:40.76235-03'::timestamp with time zone")) @db.Timestamptz(6)
+  updatedAt DateTime? @db.Timestamptz(6)
+  Dreams    Dreams[]
+  Session   Session?
+}
+
+enum goalType {
+  People
+  Finance
+  Job
+  Health
+  Others
+}
