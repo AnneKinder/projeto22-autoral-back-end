@@ -12,6 +12,7 @@ import {
   usersRouter,
   authenticationRouter,
 } from '@/routers';
+import { dreamRouter } from './routers/dreams-router';
 
 const app = express();
 app
@@ -20,6 +21,7 @@ app
   .get('/health', (_req, res) => res.send('OK!'))
   .use('/users', usersRouter)
   .use('/auth', authenticationRouter)
+  .use('/dreams', dreamRouter)
   .use(handleApplicationErrors);
 
 export function init(): Promise<Express> {

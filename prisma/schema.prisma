@@ -8,49 +8,50 @@ datasource db {
 }
 
 model Dreams {
-  id           Int       @id(map: "Dreams_pk") @default(autoincrement())
-  title        String    @db.VarChar
-  userId       Int
-  dateToBeDone String
-  isDone       Boolean   @default(false)
-  dateWhenDone String?
-  totalPoints  Int
-  createdAt    DateTime  @default(dbgenerated("'2023-06-06 22:24:40.774078-03'::timestamp with time zone")) @db.Timestamptz(6)
-  updatedAt    DateTime? @db.Timestamptz(6)
-  User         User      @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Dreams_fk0")
-  Goals        Goals[]
-}
-
-model GoalCategories {
-  id        Int       @id(map: "GoalCategories_pk") @default(autoincrement())
-  name      String    @db.VarChar
-  type      goalType
-  createdAt DateTime  @default(dbgenerated("'2023-06-06 22:24:40.786862-03'::timestamp with time zone")) @db.Timestamptz(6)
-  updatedAt DateTime? @db.Timestamptz(6)
-  Goals     Goals[]
-}
-
-model Goals {
-  id             Int            @id(map: "Goals_pk") @default(autoincrement())
-  title          String         @db.VarChar
-  dreamId        Int
-  categoryId     Int
-  isDone         Boolean        @default(false)
-  dateWheDone    DateTime?      @db.Date
-  points         Int
-  createdAt      DateTime       @default(dbgenerated("'2023-06-06 22:24:40.7805-03'::timestamp with time zone")) @db.Timestamptz(6)
-  updatedAt      DateTime?      @db.Timestamptz(6)
-  Dreams         Dreams         @relation(fields: [dreamId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Goals_fk0")
-  GoalCategories GoalCategories @relation(fields: [categoryId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Goals_fk1")
+  id            Int        @id(map: "Dreams_pk") @default(autoincrement())
+  title         String     @db.VarChar
+  userId        Int
+  dateToBeDone  String
+  isDone        Boolean    @default(false)
+  dateWhenDone  String?
+  partialPoints Int?       @default(0)
+  totalScore    Int
+  pictureUrl    String
+  createdAt     DateTime   @default(dbgenerated("'2023-06-16 22:58:11.066342-03'::timestamp with time zone")) @db.Timestamptz(6)
+  updatedAt     DateTime?  @db.Timestamptz(6)
+  User          User       @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Dreams_fk0")
+  TaskList      TaskList[]
 }
 
 model Session {
   id        Int       @id(map: "Session_pk") @default(autoincrement())
   userId    Int       @unique
   token     String    @unique
-  createdAt DateTime  @default(dbgenerated("'2023-06-06 22:24:40.793872-03'::timestamp with time zone")) @db.Timestamptz(6)
-  updatedAt DateTime? @default(dbgenerated("'2023-06-08 11:08:25.518604-03'::timestamp with time zone")) @db.Timestamptz(6)
+  createdAt DateTime  @default(dbgenerated("'2023-06-16 22:58:19.58273-03'::timestamp with time zone")) @db.Timestamptz(6)
+  updatedAt DateTime? @db.Timestamptz(6)
   User      User      @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Session_fk0")
+}
+
+model TaskList {
+  id         Int          @id(map: "TaskList_pk") @default(autoincrement())
+  dreamId    Int
+  t1         String       @db.VarChar
+  t2         String?      @db.VarChar
+  t3         String?      @db.VarChar
+  t4         String?      @db.VarChar
+  t5         String?      @db.VarChar
+  createdAt  DateTime     @default(dbgenerated("'2023-06-16 22:58:11.074417-03'::timestamp with time zone")) @db.Timestamptz(6)
+  updatedAt  DateTime?    @db.Timestamptz(6)
+  Dreams     Dreams       @relation(fields: [dreamId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "TaskList_fk0")
+  TaskStatus TaskStatus[]
+}
+
+model TaskStatus {
+  id         Int      @id(map: "TaskStatus_pk") @default(autoincrement())
+  tasklistId Int
+  taskNumber Int
+  isDone     Boolean  @default(false)
+  TaskList   TaskList @relation(fields: [tasklistId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "TaskStatus_fk0")
 }
 
 model User {
@@ -60,16 +61,8 @@ model User {
   email     String    @unique @db.VarChar
   password  String    @db.VarChar
   score     Int?
-  createdAt DateTime  @default(dbgenerated("'2023-06-06 22:24:40.76235-03'::timestamp with time zone")) @db.Timestamptz(6)
+  createdAt DateTime  @default(dbgenerated("'2023-06-16 22:58:11.0468-03'::timestamp with time zone")) @db.Timestamptz(6)
   updatedAt DateTime? @db.Timestamptz(6)
   Dreams    Dreams[]
   Session   Session?
-}
-
-enum goalType {
-  People
-  Finance
-  Job
-  Health
-  Others
 }
