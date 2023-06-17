@@ -41,3 +41,7 @@ export type createDream =  Omit<Dreams, 'id' | 'createdAt' | 'updatedAt'>;
 export type createTasklist =  Omit<TaskList, 'id' | 'createdAt' | 'updatedAt'>;
 
 export type tasklistWithoutDreamId = Omit<TaskList, 'id' | 'dreamId' | 'createdAt' | 'updatedAt'>
+
+export type TokenType = {
+  token: string
+}

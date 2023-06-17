@@ -1,4 +1,4 @@
-import { createSessionData } from "@/protocols";
+import { TokenType, createSessionData } from "@/protocols";
 import { Session } from "@prisma/client";
 import { prisma } from "config/database";
 
@@ -8,16 +8,22 @@ async function create(data: createSessionData): Promise<Session> {
   });
 }
 
-async function findBySession(token: string){
+async function findBySession(token: string): Promise<Session> {
   return await prisma.session.findFirst({
-    where:{token}
+    where: { token }
   })
 }
 
+async function endSession(token: string) {
+  await prisma.session.delete({
+    where: { token }
+  })
+}
 
 const sessionRepository = {
   create,
-  findBySession
+  findBySession,
+  endSession
 };
 
 

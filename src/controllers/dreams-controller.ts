@@ -24,9 +24,7 @@ export async function listDreams(req: AuthenticatedRequest, res: Response, next:
 
     const dreamlist = await dreamService.getDream(userId);
     
-    return res.status(httpStatus.OK).send({
-      dream: dreamlist,
-    });
+    return res.status(httpStatus.OK).send(dreamlist);
   } catch (error) {
     next(error);
   }
