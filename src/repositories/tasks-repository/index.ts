@@ -8,9 +8,17 @@ async function create( data: CreateParams): Promise<TaskList> {
         data
       });
 }
+async function findTasklist(dreamId: number): Promise<TaskList []> {
+  return prisma.taskList.findMany({
+    where: {
+      dreamId,
+    }
+  });
+}
 
 const tasksRepository = {
     create,
+    findTasklist
   };
    
   

@@ -5,13 +5,39 @@ import dreamService from '@/services/dreams-service';
 import authenticationService from '@/services/authentication-service';
 import tasksService from '@/services/tasks-service';
 
+export async function getUserId(request: AuthenticatedRequest) {
+  try {
+    const { authorization } = request.headers;
+    const token = authorization?.replace("Bearer ", "");
+    const {userId} = await authenticationService.findSessiondByToken(token)
+    return userId
+
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function listDreams(req: AuthenticatedRequest, res: Response, next: NextFunction) {
+  try {
+    
+    const userId = Number( await getUserId(req))
+
+    const dreamlist = await dreamService.getDream(userId);
+    
+    return res.status(httpStatus.OK).send({
+      dream: dreamlist,
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
+
 export async function addDreamAndTasklist(req: AuthenticatedRequest, res: Response, next: NextFunction) {
   try {
 
-    const { authorization } = req.headers;
-    const token = authorization?.replace("Bearer ", "");
-    const {userId} = await authenticationService.findSessiondByToken(token)
-
+    const userId = Number( await getUserId(req))
+  
     const dream = req.body.dream
     const tasks = req.body.tasks
 
