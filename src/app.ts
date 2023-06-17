@@ -11,8 +11,8 @@ import { handleApplicationErrors } from '@/middlewares';
 import {
   usersRouter,
   authenticationRouter,
+  dreamRouter
 } from '@/routers';
-import { dreamRouter } from './routers/dreams-router';
 
 const app = express();
 app
