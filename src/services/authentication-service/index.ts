@@ -6,6 +6,7 @@ import { exclude } from '@/utils/prisma-utils';
 import userRepository from '@/repositories/user-repository';
 import sessionRepository from '@/repositories/session-repository';
 import { GetUserOrFailResult, SignInParams, SignInResult } from '@/protocols';
+import { unauthorizedError } from '@/errors';
 
 async function signIn(params: SignInParams): Promise<SignInResult> {
   const { email, password } = params;
@@ -45,8 +46,17 @@ async function validatePasswordOrFail(password: string, userPassword: string) {
   if (!isPasswordValid) throw invalidCredentialsError();
 }
 
+async function findSessiondByToken(token:string){
+  const session = await sessionRepository.findBySession(token)
+  if(!session) throw unauthorizedError()
+
+  return session
+}
+
+
 const authenticationService = {
   signIn,
+  findSessiondByToken
 };
 
 export default authenticationService;

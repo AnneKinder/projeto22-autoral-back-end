@@ -8,8 +8,18 @@ async function create(data: createSessionData): Promise<Session> {
   });
 }
 
+async function findBySession(token: string){
+  return await prisma.session.findFirst({
+    where:{token}
+  })
+}
+
+
 const sessionRepository = {
   create,
+  findBySession
 };
+
+
 
 export default sessionRepository;
