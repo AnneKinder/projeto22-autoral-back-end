@@ -3,7 +3,12 @@ import { badRequestError } from '@/errors/bad-request-error';
 import { createTasklist, tasklistWithoutDreamId } from '@/protocols';
 import tasksRepository from '@/repositories/tasks-repository';
 
+async function getTasklist(dreamId: number) {
+    const tasklist = await tasksRepository.findTasklist(dreamId);
+    if (!tasklist) throw notFoundError();
 
+    return tasklist;
+  }
 
 async function createTasklist(dreamId: number, tasks:tasklistWithoutDreamId) {
     if (!dreamId) throw notFoundError();
@@ -16,8 +21,8 @@ async function createTasklist(dreamId: number, tasks:tasklistWithoutDreamId) {
 
 
 const tasksService = {
+    getTasklist,
     createTasklist
-
 };
 
 export default tasksService;

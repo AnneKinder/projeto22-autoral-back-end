@@ -9,8 +9,19 @@ async function create( data: CreateParams): Promise<Dreams> {
       });
 }
 
+
+async function findDreams(userId: number): Promise<Dreams []> {
+  return prisma.dreams.findMany({
+    where: {
+      userId,
+    }
+  });
+}
+
+
 const dreamRepository = {
   create,
+  findDreams
 };
 
 export default dreamRepository;
