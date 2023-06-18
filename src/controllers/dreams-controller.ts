@@ -9,7 +9,7 @@ export async function getUserId(request: AuthenticatedRequest) {
   try {
     const { authorization } = request.headers;
     const token = authorization?.replace("Bearer ", "");
-    const {userId} = await authenticationService.findSessiondByToken(token)
+    const { userId } = await authenticationService.findSessiondByToken(token)
     return userId
 
   } catch (error) {
@@ -19,12 +19,24 @@ export async function getUserId(request: AuthenticatedRequest) {
 
 export async function listDreams(req: AuthenticatedRequest, res: Response, next: NextFunction) {
   try {
-    
-    const userId = Number( await getUserId(req))
 
-    const dreamlist = await dreamService.getDream(userId);
-    
+    const userId = Number(await getUserId(req))
+
+    const dreamlist = await dreamService.getDreamList(userId);
+
     return res.status(httpStatus.OK).send(dreamlist);
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function findDreamByDreamId(req: AuthenticatedRequest, res: Response, next: NextFunction) {
+
+  const { dreamId } = req.params;
+
+  try {
+    const dream = await dreamService.getDreamByDreamId(Number(dreamId));
+    return res.status(httpStatus.OK).send(dream);
   } catch (error) {
     next(error);
   }
@@ -34,8 +46,8 @@ export async function listDreams(req: AuthenticatedRequest, res: Response, next:
 export async function addDreamAndTasklist(req: AuthenticatedRequest, res: Response, next: NextFunction) {
   try {
 
-    const userId = Number( await getUserId(req))
-  
+    const userId = Number(await getUserId(req))
+
     const dream = req.body.dream
     const tasks = req.body.tasks
 

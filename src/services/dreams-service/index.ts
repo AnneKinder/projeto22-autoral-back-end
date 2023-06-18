@@ -3,12 +3,23 @@ import { badRequestError } from '@/errors/bad-request-error';
 import { createDream } from '@/protocols';
 import dreamRepository from '@/repositories/dreams-repository';
 
-async function getDream(userId: number) {
-    const dreams = await dreamRepository.findDreams(userId);
-    if (!dreams) throw notFoundError();
+async function getDreamList(userId: number) {
+    const dreamlist = await dreamRepository.findDreams(userId);
+    if (!dreamlist) throw notFoundError();
 
-    return dreams;
-  }
+    return dreamlist;
+}
+
+
+async function getDreamByDreamId(dreamId: number) {
+    const dream = await dreamRepository.findByDreamId(dreamId)
+
+    if (!dream) {
+        throw notFoundError();
+    }
+    return dream;
+}
+
 
 async function createDream(userId: number, dream: createDream) {
     if (!dream) throw badRequestError();
@@ -20,7 +31,8 @@ async function createDream(userId: number, dream: createDream) {
 
 
 const dreamService = {
-    getDream,
+    getDreamList,
+    getDreamByDreamId,
     createDream
 };
 
