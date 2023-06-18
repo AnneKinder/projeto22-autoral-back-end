@@ -8,9 +8,9 @@ async function getTasklist(dreamId: number) {
     if (!tasklist) throw notFoundError();
 
     return tasklist;
-  }
+}
 
-async function createTasklist(dreamId: number, tasks:tasklistWithoutDreamId) {
+async function createTasklist(dreamId: number, tasks: tasklistWithoutDreamId) {
     if (!dreamId) throw notFoundError();
     if (!tasks) throw badRequestError()
 

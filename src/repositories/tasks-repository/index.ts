@@ -3,13 +3,13 @@ import { TaskList } from '@prisma/client';
 
 type CreateParams = Omit<TaskList, 'id' | 'createdAt' | 'updatedAt'>;
 
-async function create( data: CreateParams): Promise<TaskList> {
-    return prisma.taskList.create({
-        data
-      });
+async function create(data: CreateParams): Promise<TaskList> {
+  return prisma.taskList.create({
+    data
+  });
 }
-async function findTasklist(dreamId: number): Promise<TaskList []> {
-  return prisma.taskList.findMany({
+async function findTasklist(dreamId: number): Promise<TaskList> {
+  return prisma.taskList.findFirst({
     where: {
       dreamId,
     }
@@ -17,9 +17,9 @@ async function findTasklist(dreamId: number): Promise<TaskList []> {
 }
 
 const tasksRepository = {
-    create,
-    findTasklist
-  };
-   
-  
-  export default tasksRepository;
+  create,
+  findTasklist
+};
+
+
+export default tasksRepository;

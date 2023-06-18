@@ -36,12 +36,14 @@ export async function findDreamByDreamId(req: AuthenticatedRequest, res: Respons
 
   try {
     const dream = await dreamService.getDreamByDreamId(Number(dreamId));
-    return res.status(httpStatus.OK).send(dream);
+
+    const tasklist = await tasksService.getTasklist(Number(dreamId));
+
+    return res.status(httpStatus.OK).send({ dream, tasklist });
   } catch (error) {
     next(error);
   }
 }
-
 
 export async function addDreamAndTasklist(req: AuthenticatedRequest, res: Response, next: NextFunction) {
   try {
