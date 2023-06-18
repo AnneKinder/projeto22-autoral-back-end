@@ -18,10 +18,17 @@ async function findDreams(userId: number): Promise<Dreams []> {
   });
 }
 
+async function findByDreamId(dreamId: number) {
+  return prisma.dreams.findFirst({
+    where: {
+      id: dreamId,
+    }
+})}
 
 const dreamRepository = {
   create,
-  findDreams
+  findDreams,
+  findByDreamId  
 };
 
 export default dreamRepository;
