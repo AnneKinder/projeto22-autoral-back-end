@@ -39,17 +39,16 @@ export async function findDreamByDreamId(req: AuthenticatedRequest, res: Respons
 
     const tasklist = await tasksService.getTasklist(Number(dreamId));
 
+
     return res.status(httpStatus.OK).send({ dream, tasklist });
   } catch (error) {
     next(error);
   }
 }
 
-export async function addDreamAndTasklist(req: AuthenticatedRequest, res: Response, next: NextFunction) {
+export async function addDreamAndTasklistAndStatus(req: AuthenticatedRequest, res: Response, next: NextFunction) {
   try {
-
     const userId = Number(await getUserId(req))
-
     const dream = req.body.dream
     const tasks = req.body.tasks
 
@@ -57,10 +56,15 @@ export async function addDreamAndTasklist(req: AuthenticatedRequest, res: Respon
     const dreamId = newDream.id
 
     const newTaskList = await tasksService.createTasklist(dreamId, tasks)
+    const tasklistId = newTaskList.id
+
+    const newTaskStatus = await tasksService.createTaskStatus(tasklistId)
+    const taskStatusId = newTaskStatus.id
 
     return res.status(httpStatus.OK).send({
       dreamId,
-      newTaskListId: newTaskList.id
+      tasklistId,
+      taskStatusId
     });
   } catch (error) {
     next(error);
