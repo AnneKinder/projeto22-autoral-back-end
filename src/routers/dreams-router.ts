@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { authenticateToken } from '@/middlewares';
 import {  addDream, findDreamInfoByDreamId, listDreams } from '@/controllers/dreams-controller';
-import { addTasks } from '@/controllers';
+import { addTasks, updateTaskStatus } from '@/controllers';
 
 const dreamRouter = Router();
 
@@ -11,7 +11,7 @@ dreamRouter
   .post("/tasks", addTasks)
   .get('/dreamlist', listDreams)
   .get('/dreamlist/:dreamId', findDreamInfoByDreamId)
-  // .post('/status/:taskStatusId', updateTaskStatus);
+  .post('/status/:taskId', updateTaskStatus);
 
 
 export { dreamRouter };

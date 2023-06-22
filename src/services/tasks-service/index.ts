@@ -22,17 +22,19 @@ async function createTask(task: tasktWithoutDreamId, dreamId: number) {
 }
 
 
-// async function updateStatus(taskStatusId: number, taskNumber:string) {
+async function updateStatus(taskId: number) {
+if (!taskId) throw badRequestError()
 
+return await tasksRepository.update(taskId)
 
-// }
+}
 
 
 
 const tasksService = {
     getTasklist,
     createTask,
-    // updateStatus
+    updateStatus
 };
 
 export default tasksService;
