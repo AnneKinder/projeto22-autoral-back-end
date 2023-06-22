@@ -4,6 +4,8 @@ import { AuthenticatedRequest } from '@/middlewares';
 import dreamService from '@/services/dreams-service';
 import authenticationService from '@/services/authentication-service';
 import tasksService from '@/services/tasks-service';
+import { CreateTask } from '@/protocols';
+import { Tasks } from '@prisma/client';
 
 export async function getUserId(request: AuthenticatedRequest) {
   try {
@@ -30,41 +32,33 @@ export async function listDreams(req: AuthenticatedRequest, res: Response, next:
   }
 }
 
-export async function findDreamByDreamId(req: AuthenticatedRequest, res: Response, next: NextFunction) {
+// export async function findDreamInfoByDreamId(req: AuthenticatedRequest, res: Response, next: NextFunction) {
 
-  const { dreamId } = req.params;
+//   const { dreamId } = req.params;
 
-  try {
-    const dream = await dreamService.getDreamByDreamId(Number(dreamId));
+//   try {
+//     const dream = await dreamService.getDreamByDreamId(Number(dreamId));
 
-    const tasklist = await tasksService.getTasklist(Number(dreamId));
+//     const tasklist = await tasksService.getTasklist(Number(dreamId));
 
+//     const statusOfTask = await tasksService.getTaskStatus(Number(tasklist.id))
 
-    return res.status(httpStatus.OK).send({ dream, tasklist });
-  } catch (error) {
-    next(error);
-  }
-}
+//     return res.status(httpStatus.OK).send({ dream, tasklist, statusOfTask });
+//   } catch (error) {
+//     next(error);
+//   }
+// }
 
-export async function addDreamAndTasklistAndStatus(req: AuthenticatedRequest, res: Response, next: NextFunction) {
+export async function addDream(req: AuthenticatedRequest, res: Response, next: NextFunction) {
   try {
     const userId = Number(await getUserId(req))
     const dream = req.body.dream
-    const tasks = req.body.tasks
 
     const newDream = await dreamService.createDream(userId, dream);
     const dreamId = newDream.id
 
-    const newTaskList = await tasksService.createTasklist(dreamId, tasks)
-    const tasklistId = newTaskList.id
-
-    const newTaskStatus = await tasksService.createTaskStatus(tasklistId)
-    const taskStatusId = newTaskStatus.id
-
     return res.status(httpStatus.OK).send({
-      dreamId,
-      tasklistId,
-      taskStatusId
+      dreamId
     });
   } catch (error) {
     next(error);

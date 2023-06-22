@@ -26,7 +26,7 @@ async function createDream(userId: number, dream: createDream) {
 
     const { title, dateToBeDone, totalScore, pictureUrl } = dream
 
-    return dreamRepository.create({ userId, title, dateToBeDone, totalScore, pictureUrl });
+    return await dreamRepository.create({ userId, title, dateToBeDone, totalScore, pictureUrl });
 }
 
 

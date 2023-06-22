@@ -1,4 +1,4 @@
-import { Dreams, TaskList, User } from "@prisma/client";
+import { Dreams, Tasks, User } from "@prisma/client";
 
 export type UserCreate = {
   name: string,
@@ -38,9 +38,9 @@ export type ApplicationError = {
 
 export type createDream =  Omit<Dreams, 'id' | 'createdAt' | 'updatedAt'>;
 
-export type createTasklist =  Omit<TaskList, 'id' | 'createdAt' | 'updatedAt'>;
+export type CreateTask=  Omit<Tasks, 'id' | 'createdAt' | 'updatedAt'>;
 
-export type tasklistWithoutDreamId = Omit<TaskList, 'id' | 'dreamId' | 'createdAt' | 'updatedAt'>
+export type tasktWithoutDreamId = Omit<Tasks, 'id' | 'dreamId' | 'createdAt' | 'updatedAt'>
 
 export type TokenType = {
   token: string
