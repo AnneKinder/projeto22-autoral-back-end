@@ -3,26 +3,19 @@ import httpStatus from 'http-status';
 import { AuthenticatedRequest } from '@/middlewares';
 import tasksService from '@/services/tasks-service';
 
-export async function findTaskStatus(req: AuthenticatedRequest, res: Response, next: NextFunction) {
-    const { tasklistId } = req.params;
 
+export async function addTasks(req: AuthenticatedRequest, res: Response, next: NextFunction) {
     try {
-        // const taskStatus = await tasksService.getTaskStatus(Number(tasklistId));
-        // return res.status(httpStatus.OK).send(taskStatus);
+        const task = req.body.task
+      const dreamId = Number(req.body.dreamId)
+  
+      const newTask = await tasksService.createTask(task, dreamId);
+      const newTaskId = newTask.id
+  
+      return res.status(httpStatus.OK).send({
+        task, dreamId
+      });
     } catch (error) {
-        next(error);
+      next(error);
     }
-}
-
-export async function updateTaskStatus(req: AuthenticatedRequest, res: Response, next: NextFunction) {
-    const { taskStatusId } = req.params;
-    const {taskNumber} = req.body
-
-    try {
-        // const newStatus = await tasksService.updateStatus(Number(taskStatusId), taskNumber);
-        // return res.status(httpStatus.OK).send(newStatus);
-    } catch (error) {
-        next(error);
-    }
-}
-
+  }

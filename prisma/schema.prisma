@@ -8,55 +8,37 @@ datasource db {
 }
 
 model Dreams {
-  id            Int        @id(map: "Dreams_pk") @default(autoincrement())
-  title         String     @db.VarChar
-  userId        Int
-  dateToBeDone  String
-  isDone        Boolean    @default(false)
-  dateWhenDone  String?
-  partialPoints Int?       @default(0)
-  totalScore    Int
-  pictureUrl    String
-  createdAt     DateTime   @default(dbgenerated("'2023-06-20 20:08:40.515637-03'::timestamp with time zone")) @db.Timestamptz(6)
-  updatedAt     DateTime?  @db.Timestamptz(6)
-  User          User       @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Dreams_fk0")
-  TaskList      TaskList[]
+  id           Int      @id(map: "Dreams_pk") @default(autoincrement())
+  title        String   @db.VarChar
+  userId       Int
+  dateToBeDone String
+  isDone       Boolean  @default(false)
+  dateWhenDone String?
+  totalScore   Int
+  pictureUrl   String
+  createdAt    DateTime @default(dbgenerated("'19:03:13.104566'::time without time zone")) @db.Time(6)
+  updatedAt    DateTime @default(dbgenerated("'19:03:13.104566'::time without time zone")) @db.Time(6)
+  User         User     @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Dreams_fk0")
+  Tasks        Tasks[]
 }
 
 model Session {
-  id        Int       @id(map: "Session_pk") @default(autoincrement())
-  userId    Int       @unique
-  token     String    @unique
-  createdAt DateTime  @default(dbgenerated("'2023-06-20 20:08:51.867449-03'::timestamp with time zone")) @db.Timestamptz(6)
-  updatedAt DateTime? @db.Timestamptz(6)
-  User      User      @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Session_fk0")
+  id        Int      @id(map: "Session_pk") @default(autoincrement())
+  userId    Int      @unique
+  token     String   @unique
+  createdAt DateTime @default(dbgenerated("'19:03:19.597547'::time without time zone")) @db.Time(6)
+  updatedAt DateTime @default(dbgenerated("'19:03:19.597547'::time without time zone")) @db.Time(6)
+  User      User     @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Session_fk0")
 }
 
-model StatusOfTasks {
-  id         Int       @id(map: "StatusOfTasks_pk") @default(autoincrement())
-  tasklistId Int       @unique
-  t1         Boolean   @default(false)
-  t2         Boolean   @default(false)
-  t3         Boolean   @default(false)
-  t4         Boolean   @default(false)
-  t5         Boolean   @default(false)
-  createdAt  DateTime  @default(dbgenerated("'2023-06-20 20:08:51.882936-03'::timestamp with time zone")) @db.Timestamptz(6)
-  updatedAt  DateTime? @db.Timestamptz(6)
-  TaskList   TaskList  @relation(fields: [tasklistId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "StatusOfTasks_fk0")
-}
-
-model TaskList {
-  id            Int            @id(map: "TaskList_pk") @default(autoincrement())
-  dreamId       Int
-  t1            String         @db.VarChar
-  t2            String?        @db.VarChar
-  t3            String?        @db.VarChar
-  t4            String?        @db.VarChar
-  t5            String?        @db.VarChar
-  createdAt     DateTime       @default(dbgenerated("'2023-06-20 20:08:40.522783-03'::timestamp with time zone")) @db.Timestamptz(6)
-  updatedAt     DateTime?      @db.Timestamptz(6)
-  StatusOfTasks StatusOfTasks?
-  Dreams        Dreams         @relation(fields: [dreamId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "TaskList_fk0")
+model Tasks {
+  id        Int      @id(map: "Tasks_pk") @default(autoincrement())
+  dreamId   Int
+  descrip   String   @db.VarChar
+  isDone    Boolean  @default(false)
+  createdAt DateTime @default(dbgenerated("'19:03:19.536433'::time without time zone")) @db.Time(6)
+  updatedAt DateTime @default(dbgenerated("'19:03:19.536433'::time without time zone")) @db.Time(6)
+  Dreams    Dreams   @relation(fields: [dreamId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Tasks_fk0")
 }
 
 model User {
@@ -66,7 +48,7 @@ model User {
   email     String    @unique @db.VarChar
   password  String    @db.VarChar
   score     Int?
-  createdAt DateTime  @default(dbgenerated("'2023-06-20 20:08:40.485188-03'::timestamp with time zone")) @db.Timestamptz(6)
+  createdAt DateTime  @default(dbgenerated("'2023-06-21 19:03:13.08425-03'::timestamp with time zone")) @db.Timestamptz(6)
   updatedAt DateTime? @db.Timestamptz(6)
   Dreams    Dreams[]
   Session   Session?

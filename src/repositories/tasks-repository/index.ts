@@ -1,60 +1,38 @@
 import { prisma } from '@/config';
-import { StatusOfTasks, TaskList, } from '@prisma/client';
+import { CreateTask } from '@/protocols';
+import { Tasks, } from '@prisma/client';
 
-type CreateParams = Omit<TaskList, 'id' | 'createdAt' | 'updatedAt'>;
-type UpdateStatusParams = Omit<StatusOfTasks, 'id' | 'createdAt' | 'updatedAt' >
+type CreateParams = Omit<Tasks, 'id' | 'createdAt' | 'updatedAt'>;
 
 
-
-async function create(data: CreateParams): Promise<TaskList> {
-  return prisma.taskList.create({
-    data
-  });
+async function create(data: CreateTask): Promise<Tasks> {
+return prisma.tasks.create({
+  data
+})
 }
 
-async function createStatus(tasklistId: number): Promise<StatusOfTasks> {
-  return prisma.statusOfTasks.create({
-    data:{
-      tasklistId
-    }
-  });
-}
-
-async function findTasklist(dreamId: number): Promise<TaskList> {
-  return prisma.taskList.findFirst({
-    where: {
-      dreamId,
-    }
-  });
-}
-
-// async function findTaskStatus(tasklistId: number): Promise<TaskStatus[]> {
-//   return prisma.taskStatus.findMany({
+// async function findTasklist(dreamId: number): Promise<TaskList> {
+//   return prisma.taskList.findFirst({
 //     where: {
-//       tasklistId,
+//       dreamId,
 //     }
 //   });
 // }
 
-// async function update( taskStatusId:number, taskNumber: string, isDone: boolean): Promise<TaskStatus> {
-//   return prisma.taskStatus.update({
+
+// async function update( taskStatusId:number, data: Object): Promise<StatusOfTasks> {
+//   return prisma.statusOfTasks.update({
 //     where: {
 //       id: taskStatusId
 //     },
-//     data: {
-//       isDone,
-//       taskNumber
-//     }
+//     data
 //   })
-
 
 // }
 
 const tasksRepository = {
   create,
-  createStatus,
-  findTasklist,
-  // findTaskStatus,
+  // findTasklist,
   // update
 };
 
