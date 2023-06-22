@@ -4,8 +4,6 @@ import { AuthenticatedRequest } from '@/middlewares';
 import dreamService from '@/services/dreams-service';
 import authenticationService from '@/services/authentication-service';
 import tasksService from '@/services/tasks-service';
-import { CreateTask } from '@/protocols';
-import { Tasks } from '@prisma/client';
 
 export async function getUserId(request: AuthenticatedRequest) {
   try {
@@ -38,8 +36,9 @@ export async function findDreamInfoByDreamId(req: AuthenticatedRequest, res: Res
 
   try {
     const dream = await dreamService.getDreamByDreamId(Number(dreamId));
+    const tasklist = await tasksService.getTasklist(Number(dreamId))
 
-    return res.status(httpStatus.OK).send({ dream });
+    return res.status(httpStatus.OK).send({ dream, tasklist });
   } catch (error) {
     next(error);
   }
