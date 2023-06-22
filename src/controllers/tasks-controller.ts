@@ -19,3 +19,19 @@ export async function addTasks(req: AuthenticatedRequest, res: Response, next: N
       next(error);
     }
   }
+
+
+export async function updateTaskStatus(req: AuthenticatedRequest, res: Response, next: NextFunction) {
+  try {
+    const { taskId } = req.params;
+
+    const updated = await tasksService.updateStatus(Number(taskId));
+
+    return res.status(httpStatus.OK).send({
+      updated
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+

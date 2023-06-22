@@ -3,9 +3,9 @@ import { CreateTask } from '@/protocols';
 import { Tasks, } from '@prisma/client';
 
 async function create(data: CreateTask): Promise<Tasks> {
-return prisma.tasks.create({
-  data
-})
+  return prisma.tasks.create({
+    data
+  })
 }
 
 async function findTasks(dreamId: number): Promise<Tasks[]> {
@@ -16,22 +16,21 @@ async function findTasks(dreamId: number): Promise<Tasks[]> {
   });
 }
 
-
-// async function update( taskStatusId:number, data: Object): Promise<StatusOfTasks> {
-//   return prisma.statusOfTasks.update({
-//     where: {
-//       id: taskStatusId
-//     },
-//     data
-//   })
-
-// }
+async function update(taskId: number): Promise<Tasks> {
+  return prisma.tasks.update({
+    where: {
+      id: taskId
+    },
+    data: {
+      isDone: true,
+    },
+  })
+}
 
 const tasksRepository = {
   create,
   findTasks,
-  // update
+  update
 };
-
 
 export default tasksRepository;
