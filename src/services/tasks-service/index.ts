@@ -1,16 +1,15 @@
 import { notFoundError } from '@/errors';
 import { badRequestError } from '@/errors/bad-request-error';
-import {
-    CreateTask, tasktWithoutDreamId,
+import { tasktWithoutDreamId,
 } from '@/protocols';
 import tasksRepository from '@/repositories/tasks-repository';
 
-// async function getTasklist(dreamId: number) {
-//     const tasklist = await tasksRepository.findTasklist(dreamId);
-//     if (!tasklist) throw notFoundError();
+async function getTasklist(dreamId: number) {
+    const tasklist = await tasksRepository.findTasks(dreamId);
+    if (!tasklist) throw notFoundError();
 
-//     return tasklist;
-// }
+    return tasklist;
+}
 
 
 async function createTask(task: tasktWithoutDreamId, dreamId: number) {
@@ -31,7 +30,7 @@ async function createTask(task: tasktWithoutDreamId, dreamId: number) {
 
 
 const tasksService = {
-    // getTasklist,
+    getTasklist,
     createTask,
     // updateStatus
 };
