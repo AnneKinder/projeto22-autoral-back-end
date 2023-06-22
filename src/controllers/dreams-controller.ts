@@ -32,22 +32,18 @@ export async function listDreams(req: AuthenticatedRequest, res: Response, next:
   }
 }
 
-// export async function findDreamInfoByDreamId(req: AuthenticatedRequest, res: Response, next: NextFunction) {
+export async function findDreamInfoByDreamId(req: AuthenticatedRequest, res: Response, next: NextFunction) {
 
-//   const { dreamId } = req.params;
+  const { dreamId } = req.params;
 
-//   try {
-//     const dream = await dreamService.getDreamByDreamId(Number(dreamId));
+  try {
+    const dream = await dreamService.getDreamByDreamId(Number(dreamId));
 
-//     const tasklist = await tasksService.getTasklist(Number(dreamId));
-
-//     const statusOfTask = await tasksService.getTaskStatus(Number(tasklist.id))
-
-//     return res.status(httpStatus.OK).send({ dream, tasklist, statusOfTask });
-//   } catch (error) {
-//     next(error);
-//   }
-// }
+    return res.status(httpStatus.OK).send({ dream });
+  } catch (error) {
+    next(error);
+  }
+}
 
 export async function addDream(req: AuthenticatedRequest, res: Response, next: NextFunction) {
   try {
