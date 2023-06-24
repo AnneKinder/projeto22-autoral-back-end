@@ -2,6 +2,7 @@ import { NextFunction, Response } from 'express';
 import httpStatus from 'http-status';
 import { AuthenticatedRequest } from '@/middlewares';
 import tasksService from '@/services/tasks-service';
+import dreamService from '@/services/dreams-service';
 
 
 export async function addTasks(req: AuthenticatedRequest, res: Response, next: NextFunction) {
@@ -24,12 +25,16 @@ export async function addTasks(req: AuthenticatedRequest, res: Response, next: N
 export async function updateTaskStatus(req: AuthenticatedRequest, res: Response, next: NextFunction) {
   try {
     const { taskId } = req.params;
+    const {dreamId, newScore} = req.body
 
-    const updated = await tasksService.updateStatus(Number(taskId));
+   const updatedTask = await tasksService.updateStatus(Number(taskId));
+
+   const updatedPartialPoints =  await dreamService.updatePartialPoints(Number(dreamId), Number(newScore))
 
     return res.status(httpStatus.OK).send({
-      updated
-    });
+      updatedTask,
+     updatedPartialPoints
+  });
   } catch (error) {
     next(error);
   }

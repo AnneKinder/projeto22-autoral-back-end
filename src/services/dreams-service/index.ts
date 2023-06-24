@@ -29,11 +29,20 @@ async function createDream(userId: number, dream: createDream) {
     return await dreamRepository.create({ userId, title, dateToBeDone, totalScore, pictureUrl });
 }
 
+async function updatePartialPoints(dreamId: number, newScore: number) {
+    if (!dreamId) throw badRequestError()
+    if (!newScore) throw badRequestError()
+    
+    return await dreamRepository.updatePartialPoints(dreamId, newScore)
+    
+    }
+    
 
 const dreamService = {
     getDreamList,
     getDreamByDreamId,
-    createDream
+    createDream,
+    updatePartialPoints
 };
 
 export default dreamService;

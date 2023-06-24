@@ -25,10 +25,23 @@ async function findByDreamId(dreamId: number) {
     }
 })}
 
+
+async function updatePartialPoints(dreamId: number, newScore: number): Promise<Dreams> {
+  return prisma.dreams.update({
+    where: {
+      id: dreamId
+    },
+    data: {
+      partialPoints: newScore,
+    },
+  })
+}
+
 const dreamRepository = {
   create,
   findDreams,
-  findByDreamId  
+  findByDreamId,
+  updatePartialPoints
 };
 
 export default dreamRepository;
