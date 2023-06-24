@@ -2,6 +2,7 @@ import { notFoundError } from '@/errors';
 import { badRequestError } from '@/errors/bad-request-error';
 import { createDream } from '@/protocols';
 import dreamRepository from '@/repositories/dreams-repository';
+import tasksRepository from '@/repositories/tasks-repository';
 
 async function getDreamList(userId: number) {
     const dreamlist = await dreamRepository.findDreams(userId);
@@ -20,7 +21,6 @@ async function getDreamByDreamId(dreamId: number) {
     return dream;
 }
 
-
 async function createDream(userId: number, dream: createDream) {
     if (!dream) throw badRequestError();
 
@@ -32,17 +32,33 @@ async function createDream(userId: number, dream: createDream) {
 async function updatePartialPoints(dreamId: number, newScore: number) {
     if (!dreamId) throw badRequestError()
     if (!newScore) throw badRequestError()
-    
+
     return await dreamRepository.updatePartialPoints(dreamId, newScore)
-    
-    }
-    
+
+}
+
+async function doneTasks(dreamId: number) {
+  return await tasksRepository.findFinishedTasks(dreamId)
+}
+
+async function updateCompletedDream(dreamId: number) {
+    if (!dreamId) throw badRequestError()
+
+    return await dreamRepository.updateDreamCompletion(dreamId)
+
+}
+
+
+
+
 
 const dreamService = {
     getDreamList,
     getDreamByDreamId,
     createDream,
-    updatePartialPoints
+    updatePartialPoints,
+    doneTasks,
+    updateCompletedDream
 };
 
 export default dreamService;
