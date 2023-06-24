@@ -37,11 +37,23 @@ async function updatePartialPoints(dreamId: number, newScore: number): Promise<D
   })
 }
 
+async function updateDreamCompletion(dreamId: number): Promise<Dreams> {
+  return prisma.dreams.update({
+    where: {
+      id: dreamId
+    },
+    data: {
+      isDone: true,
+    },
+  })
+}
+
 const dreamRepository = {
   create,
   findDreams,
   findByDreamId,
-  updatePartialPoints
+  updatePartialPoints,
+  updateDreamCompletion
 };
 
 export default dreamRepository;

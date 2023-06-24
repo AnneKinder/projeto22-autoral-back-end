@@ -27,10 +27,23 @@ async function update(taskId: number): Promise<Tasks> {
   })
 }
 
+async function findFinishedTasks(dreamId: number): Promise<Tasks[]> {
+  return await prisma.tasks.findMany({
+    where: {
+      AND: [
+        { dreamId},
+        { isDone: true }
+      ],
+    },
+  })
+}
+
+
 const tasksRepository = {
   create,
   findTasks,
-  update
+  update,
+  findFinishedTasks
 };
 
 export default tasksRepository;

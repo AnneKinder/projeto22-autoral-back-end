@@ -35,10 +35,12 @@ export async function findDreamInfoByDreamId(req: AuthenticatedRequest, res: Res
   const { dreamId } = req.params;
 
   try {
+
     const dream = await dreamService.getDreamByDreamId(Number(dreamId));
     const tasklist = await tasksService.getTasklist(Number(dreamId))
+    const doneTasks = await dreamService.doneTasks(Number(dreamId))
 
-    return res.status(httpStatus.OK).send({ dream, tasklist });
+    return res.status(httpStatus.OK).send({ dream, tasklist, doneTasks });
   } catch (error) {
     next(error);
   }
@@ -60,3 +62,16 @@ export async function addDream(req: AuthenticatedRequest, res: Response, next: N
   }
 }
 
+export async function completeDream(req: AuthenticatedRequest, res: Response, next: NextFunction) {
+  try {
+    const {dreamId} = req.body
+
+    const complete = await dreamService.updateCompletedDream(Number(dreamId));
+
+    return res.status(httpStatus.OK).send({
+      dreamId
+    });
+  } catch (error) {
+    next(error);
+  }
+}
