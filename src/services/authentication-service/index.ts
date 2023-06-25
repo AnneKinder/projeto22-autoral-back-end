@@ -7,10 +7,14 @@ import userRepository from '@/repositories/user-repository';
 import sessionRepository from '@/repositories/session-repository';
 import { GetUserOrFailResult, SignInParams, SignInResult, TokenType } from '@/protocols';
 import { unauthorizedError } from '@/errors';
+import { badRequestError } from '@/errors/bad-request-error';
 
 async function signIn(params: SignInParams): Promise<SignInResult> {
   const { email, password } = params;
 
+  if(!email) throw badRequestError()
+  if(!password) throw badRequestError()
+  
   const user = await getUserOrFail(email);
 
   await validatePasswordOrFail(password, user.password);
