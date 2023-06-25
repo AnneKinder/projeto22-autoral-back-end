@@ -2,7 +2,7 @@ import { Dreams } from '@prisma/client';
 import faker from '@faker-js/faker';
 import { prisma } from '@/config';
 
-async function createDream( userId: number): Promise<Dreams> {
+export async function createDream( userId: number): Promise<Dreams> {
     return prisma.dreams.create({
         data:{
             userId,
