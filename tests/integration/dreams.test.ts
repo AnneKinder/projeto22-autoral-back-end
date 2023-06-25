@@ -187,7 +187,7 @@ describe('POST /dreams', () => {
         });
 
 
-        it('should respond with status 200 and with payment data', async () => {
+        it('should respond with status 200 and with dream data', async () => {
             const user = await createUser();
             const token = await generateValidToken(user);
 
