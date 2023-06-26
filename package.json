@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node dist/server.js",
-    "build": "ttsc -p tsconfig.build.json",
+    "build": "install ttsc -p tsconfig.build.json",
     "dev": "tsx watch src/server.ts",
     "test": "npx dotenv -e .env.test npx jest -- --forceExit",
     "coverage": "npm run test -- --coverage"
