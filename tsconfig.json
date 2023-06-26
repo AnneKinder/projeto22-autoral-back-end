@@ -1,14 +1,14 @@
 {
   "compilerOptions": {
-    "target": "es2020",
-    "module": "CommonJS",
+    "target": "es2018",
+    "module": "commonjs",
     "outDir": "dist",
     "noImplicitAny": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "esModuleInterop": true,
     "moduleResolution": "Node",
-    "rootDirs": ["src", "tests"],
+    "rootDirs": ["src"],
     "baseUrl": "src",
     "paths": {
       "@/*": ["*"]
@@ -22,5 +22,5 @@
   "ts-node": {
     "esm": true
   },
-  "include": ["src", "tests"]
+  "include": ["src/**/*.ts", "tests"],
 }
